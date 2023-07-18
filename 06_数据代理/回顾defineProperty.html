@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回顾defineProperty</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+
+    <div id="root">
+        
+    </div>
+    
+
+    <script type="text/javascript">
+        Vue.config.productionTip = false
+
+        new Vue({
+            el: "#root",
+            data:{
+                name: "故宫",
+            }
+        })
+        let number = 18
+        let person = {
+            name: '张三',
+            sex: '男'
+        }
+        Object.defineProperty(person, 'age',{
+            // value: 18,
+            // enumerable: true,// 控制属性是否可以被枚举
+            // writable: true,// 控制属性是否可以被修改
+            // configurable: true,// 控制属性是否可以被删除
+            // 当有人读取person的age属性，get函数会被触发，且返回值就是age的值
+            get() {
+                console.log('正在获取', person, '的age属性')
+                return number
+            },
+            // 当有人修改person的age属性，set函数会被触发，且会收到修改的具体值
+            set(value) {
+                console.log(person, '的age属性被修改为：', value)
+                number = value
+            }
+
+            
+        })
+        console.log(Object.keys(person))
+        console.log(person)
+    </script>
+</body>
+</html>
