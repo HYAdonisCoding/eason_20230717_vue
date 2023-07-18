@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>first vue</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+
+    <div id="demo">
+        <h1>Hell0, {{name}}, {{address}}</h1>
+    </div>
+    
+
+    <script type="text/javascript">
+        Vue.config.productionTip = false
+
+        new Vue({
+            el: "#demo",
+            data:{
+                name: "故宫",
+                address: "北京"
+            }
+        })
+
+    </script>
+</body>
+</html>
