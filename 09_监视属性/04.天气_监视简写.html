@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气-监视简写</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h1>今天天气很{{weather}}</h1>
+        <!-- <button type="button" @click="isHot = !isHot">切换天气</button> -->
+        <button type="button" @click="exchange">切换天气</button>
+        
+    </div>
+    
+
+    <script>
+        Vue.config.productionTip = false
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                isHot: true,
+            },
+            methods: {
+                exchange() {
+                    this.isHot = !this.isHot
+                }
+            },
+            computed: {
+                weather() {
+                    return this.isHot ? '炎热' : '凉爽'
+                }
+            },
+            watch: {
+                // 正常写法
+                // weather: {
+                //     // immediate:true,
+                //     deep: true,
+                //     handler(newValue, oldValue) {
+                //         console.log('weather 被修改了, 旧值：' + oldValue + '，新值：' + newValue);
+                //     }
+                // },
+                // 简写
+                // weather(newValue, oldValue) {                        
+                //     console.log('weather 被修改了, 旧值：' + oldValue + '，新值：' + newValue);
+                // }
+            }
+        })
+        // 正常写法
+        // vm.$watch('weather', {
+        //     handler(newValue, oldValue) {
+        //         console.log('weather 被修改了, 旧值：' + oldValue + '，新值：' + newValue);
+        //     }
+        // })
+        // 简写
+        vm.$watch('weather', function(newValue, oldValue) {
+            console.log('weather 被修改了, 旧值：' + oldValue + '，新值：' + newValue);
+        })
+    </script>
+</body>
+
+</html>
