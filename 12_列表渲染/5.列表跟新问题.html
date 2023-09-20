@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表跟新问题</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    
+<h2>人员列表</h2>
+<input type="text" placeholder="请输入名字" v-model="keyword"/>
+<button @click="updateMa">更新🐴</button>
+
+<ul  v-for="(p) in persons" :key="p.id">
+    <li>
+        {{ p.id }} {{ p.name }} - {{ p.age }} - {{ p.sex }}
+    </li>
+</ul>
+<hr>
+
+
+</div>
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+    
+    new Vue({
+        el: '#root',
+        
+        data: {
+            persons: [
+                { id: '001', name: '周冬雨', age: 18, sex: '女'},
+                { id: '002', name: '马冬梅', age: 19, sex: '女'},
+                { id: '003', name: '周杰伦', age: 25, sex: '男'},
+                { id: '004', name: '温兆伦', age: 22, sex: '男'},
+            ],
+        },
+        methods: {
+            updateMa() {
+                // this.persons[1].name = '马老师';  //奏效
+                // this.persons[1].age = 50;      //奏效
+                // this.persons[1].sex = '男'; //奏效
+                // this.persons[1] = { id: '002', name: '马老师', age: 50, sex:'男' }; //这样修改vue是无法监测数据的
+                this.persons.splice(1, 1, { id: '002', name: '马老师', age: 18, sex: '男'});
+            }
+        },
+        computed: {
+            filPersons() {
+                    const arr = this.filPersons = this.persons.filter(p => p.name.indexOf(this.keyword) !== -1);
+                    // console.log(String.format(JSON.stringify(arr)));
+                    // 判断是否需要排序
+                    if (!this.sortType) return arr;
+                    return arr.sort((p1, p2) => this.sortType === 1 ? p2.age-p1.age : p1.age-p2.age);
+                }
+        },
+    })
+</script>
+</body>
+</html>
