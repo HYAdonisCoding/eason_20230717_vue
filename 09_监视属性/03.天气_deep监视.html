@@ -7,6 +7,14 @@
     <script src="../js/vue.js"></script>
 </head>
 <body>
+    <!--
+		深度监视：
+				(1).Vue中的watch默认不监测对象内部值的改变（一层）。
+				(2).配置deep:true可以监测对象内部值改变（多层）。
+		备注：
+				(1).Vue自身可以监测对象内部值的改变，但Vue提供的watch默认不可以(想让它可以则配置deep:true)！
+				(2).使用watch时根据数据的具体结构，决定是否采用深度监视。
+	-->
     <div id="root">
         <h1>今天天气很{{weather}}</h1>
         <!-- <button type="button" @click="isHot = !isHot">切换天气</button> -->
