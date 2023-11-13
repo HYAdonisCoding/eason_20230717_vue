@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.注意点</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <!--
+			几个注意点：
+					1.关于组件名:
+								一个单词组成：
+											第一种写法(首字母小写)：school
+											第二种写法(首字母大写)：School
+								多个单词组成：
+											第一种写法(kebab-case命名)：my-school
+											第二种写法(CamelCase命名)：MySchool (需要Vue脚手架支持)
+								备注：
+										(1).组件名尽可能回避HTML中已有的元素名称，例如：h2、H2都不行。
+										(2).可以使用name配置项指定组件在开发者工具中呈现的名字。
+
+					2.关于组件标签:
+								第一种写法：<school></school>
+								第二种写法：<school/>
+								备注：不用使用脚手架时，<school/>会导致后续组件不能渲染。
+
+					3.一个简写方式：
+								const school = Vue.extend(options) 可简写为：const school = options
+		-->
+<div id="root">
+    <h1>{{ msg }}</h1>
+	<hello></hello>
+	<hr>
+	<school></school>
+	<hr>
+	<student></student>
+	<student></student>
+</div>   
+<div id="root2">
+    <hello></hello>
+
+</div>  
+<script>
+    Vue.config.productionTip = false;
+	/**
+     * 想用组件的三个步骤
+     * 1.创建组件
+     * 2.注册组件
+     * 3.使用组件
+     */
+    //创建school组件
+	const s = Vue.extend({
+		template: `
+		<div>
+			<h2>学校姓名：{{ schoolName }}</h2>
+			<h2>学校地址：{{ address }}</h2>
+		</div>
+		`,
+		//组件定义不要写el配置项，因为最终所有的组件都要被vm所管理，由vm决定服务于哪个容器
+        //这里data必须写成函数形式 避免多次使用组件导致共用data对象导致一个问题
+		data() {
+			//注意这里不要写箭头函数
+			return {
+				schoolName: "北大",
+				address: "北京"
+			}
+		},
+	})
+
+	//创建hello组件
+	const hello = Vue.extend({
+		template: `
+		<div>
+			<h2>hello, {{ msg }}</h2>
+		</div>
+		`,
+		data() {
+			return {
+				msg: "Eason"
+			}
+		},
+	})
+
+	//全局注册hello 就代表所有的vm都可以用hello组件了
+	Vue.component("hello",hello)
+
+	new Vue({
+		el: "#root",
+		data: {
+			msg: "hello world"
+		},
+		//配置组件(局部注册)
+		components: {
+			school:s,
+			hello,
+		}
+	})
+
+</script>
+</body>
+</html>

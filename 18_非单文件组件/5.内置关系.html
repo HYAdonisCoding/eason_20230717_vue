@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.内置关系</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<!--
+			1.一个重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype
+			2.为什么要有这个关系：让组件实例对象（vc）可以访问到 Vue原型上的属性、方法。
+-->
+<div id="root">
+	<!--new VueComponent只有在你写了<school/>或者<school></school>才会执行-->
+    <school></school>
+	
+</div>   
+ 
+<script>
+    Vue.config.productionTip = false;
+	//一个内置关系
+	Vue.prototype.x = 99;
+	//注意 VueComponent.prototype.__proto__ === Vue.prototype === vm.__proto__
+	
+
+    //创建school组件
+	const s = Vue.extend({
+		template: `
+		<div>
+			<h2>学校姓名：{{ schoolName }}</h2>
+			<h2>学校地址：{{ address }}</h2>
+			<button @click="showname">点我提示学校名</button>
+			<button @click="cx">点我输出x</button>
+		</div>
+		`,
+		//组件定义不要写el配置项，因为最终所有的组件都要被vm所管理，由vm决定服务于哪个容器
+        //这里data必须写成函数形式 避免多次使用组件导致共用data对象导致一个问题
+		data() {
+			//注意这里不要写箭头函数
+			return {
+				schoolName: "北大",
+				address: "北京"
+			}
+		},
+		// components: { student },
+		methods: {
+			showname() {
+				console.log(this);
+				console.log(this.schoolName);
+			},
+			cx() {
+				console.log(this);
+				console.log(this.__proto__.__proto__ === Vue.prototype);
+				console.log("this");
+				console.log(this.x);
+			}
+		},
+	})
+
+	//创建hello组件
+	const hello = Vue.extend({
+		template: `
+		<div>
+			<h2>hello, {{ msg }}</h2>
+		</div>
+		`,
+		data() {
+			return {
+				msg: "Eason"
+			}
+		},
+	})
+
+	const app = Vue.extend({
+		template: `
+		<div>
+			<hello></hello>
+			<school></school>
+		</div>
+		`,
+		data() {
+			return {
+				msg: "Eason"
+			}
+		},
+		components: { 
+			school: s,
+			hello
+		 }
+	})
+	console.log(typeof s, s);
+
+	//验证school与hello并不是同一个VueComponent构造函数
+	s.a = 99
+	console.log('@', s);
+	console.log('#', hello);
+	console.log('$', s === hello);
+	console.log('%', s.a);
+	console.log('^', hello.a);
+	//全局注册hello 就代表所有的vm都可以用hello组件了
+	Vue.component("hello",hello)
+
+	new Vue({
+		el: "#root",
+		data: {
+			msg: "hello world"
+		},
+		//配置组件(局部注册)
+		components: {
+			school: s,
+			hello
+		}
+	})
+
+	// // 验证
+	// function Demo() {
+	// 	this.a = 1;
+	// 	this.b = 2;
+	// }
+
+	// const d = new Demo()
+	// console.log('start');
+	// console.log(d.x);
+	// console.log(Demo.prototype);// 显示原型属性
+	// console.log(d.__proto__);// 隐示原型属性
+	// Demo.prototype.x = 99
+	// console.log(d.x);
+	// console.log(Demo.prototype === d.__proto__);
+	// console.log('end');
+</script>
+</body>
+</html>
