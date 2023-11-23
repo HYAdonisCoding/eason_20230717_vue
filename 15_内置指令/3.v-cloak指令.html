@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3.v-cloak指令</title>
-    <script src="../js/vue.js"></script>
-    
+    <!-- <script src="../js/vue.js"></script> -->
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div id="root">
@@ -15,6 +19,7 @@
                 2.使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
 -->
         <div v-cloak>{{ name }}</div>
+<script type="text/javascript" src="http://localhost:8080/5s/vue.js"></script>
 </div>
 
 

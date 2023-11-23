@@ -1,88 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>模拟数据监测</title>
     <script src="../js/vue.js"></script>
 </head>
+
 <body>
-<div id="root">
-    
-<h2>学习名称： {{ name }}</h2>
-<h2>学习地址： {{ address }}</h2>
-<hr>
-<h2>学生信息</h2>
-<h2>姓名： {{ stu.name }}</h2>
-<h2>年龄： {{ stu.age.sage }}</h2>
-<h2>性别： {{ stu.sex }}</h2>
-</div>
-<script type="text/javascript">
-    Vue.config.productionTip = false;
+    <div id="root">
 
-    let data = {
-        name: '北京大学',
-        address: '北京海淀',
-    }
-    // 创建一个监视实例对象
-    const obs = new Observer(data);
-    // 准备一个vm
-    let vm = {};
-    vm._data = data = obs;
+        <h2>学习名称： {{ name }}</h2>
+        <h2>学习地址： {{ address }}</h2>
+        <hr>
+        <h2>学生信息</h2>
+        <h2>姓名： {{ stu.name }}</h2>
+        <h2>年龄： {{ stu.age.sage }}</h2>
+        <h2>性别： {{ stu.sex }}</h2>
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
 
-    // 观察者
-    function Observer(obj) {
-        const keys = Object.keys(obj);
-        // 遍历对象中所有的key
-        keys.forEach(key => {
-            Object.defineProperty(this, key, {
-                get() {
-                    return obj[key]
-                },
-                set(v) {
-                    console.log(`${key}的值改变了，变为${v}`);
-                    obj[key] = v;
-                }
-            })
-        })
-    }
-    
-    new Vue({
-        el: '#root',
-        
-        data: {
+        let data = {
             name: '北京大学',
             address: '北京海淀',
-            stu: {
-                name: 'Eason',
-                age:  {
-                    range: 12,
-                    sage: 22
-                },
-                friends: [
-                    { name: 'Amy', age: 18, sex: 'male' },
-                ]
-            }
-        },
-        methods: {
-            updateMa() {
-                // this.persons[1].name = '马老师';  //奏效
-                // this.persons[1].age = 50;      //奏效
-                // this.persons[1].sex = '男'; //奏效
-                // this.persons[1] = { id: '002', name: '马老师', age: 50, sex:'男' }; //这样修改vue是无法监测数据的
-                this.persons.splice(1, 1, { id: '002', name: '马老师', age: 18, sex: '男'});
-            }
-        },
-        computed: {
-            filPersons() {
+        }
+        // 创建一个监视实例对象
+        const obs = new Observer(data);
+        // 准备一个vm
+        let vm = {};
+        vm._data = data = obs;
+
+        // 观察者
+        function Observer(obj) {
+            const keys = Object.keys(obj);
+            // 遍历对象中所有的key
+            keys.forEach(key => {
+                Object.defineProperty(this, key, {
+                    get() {
+                        return obj[key]
+                    },
+                    set(v) {
+                        console.log(`${ key }的值改变了，变为${ v }`);
+                        obj[key] = v;
+                    }
+                })
+            })
+        }
+
+        new Vue({
+            el: '#root',
+
+            data: {
+                name: '北京大学',
+                address: '北京海淀',
+                stu: {
+                    name: 'Eason',
+                    age: {
+                        range: 12,
+                        sage: 22
+                    },
+                    friends: [
+                        { name: 'Amy', age: 18, sex: 'male' },
+                    ]
+                }
+            },
+            methods: {
+                updateMa() {
+                    // this.persons[1].name = '马老师';  //奏效
+                    // this.persons[1].age = 50;      //奏效
+                    // this.persons[1].sex = '男'; //奏效
+                    // this.persons[1] = { id: '002', name: '马老师', age: 50, sex:'男' }; //这样修改vue是无法监测数据的
+                    this.persons.splice(1, 1, { id: '002', name: '马老师', age: 18, sex: '男' });
+                }
+            },
+            computed: {
+                filPersons() {
                     const arr = this.filPersons = this.persons.filter(p => p.name.indexOf(this.keyword) !== -1);
                     // console.log(String.format(JSON.stringify(arr)));
                     // 判断是否需要排序
                     if (!this.sortType) return arr;
-                    return arr.sort((p1, p2) => this.sortType === 1 ? p2.age-p1.age : p1.age-p2.age);
+                    return arr.sort((p1, p2) => this.sortType === 1 ? p2.age - p1.age : p1.age - p2.age);
                 }
-        },
-    })
-</script>
+            },
+        })
+    </script>
 </body>
+
 </html>
